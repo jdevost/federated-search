@@ -8,7 +8,17 @@
     <script src="js/CoveoJsSearch.js"></script>
     <script src="js/coveo.extension.js"></script>
     <script src="js/templatesNew.js"></script>
+    <script src="js/oauth2-client.js"></script>
+    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
     <script>
+      let MicrosoftOAuth2Provider = new OAuth2Client.Provider({
+          id: 'microsoft',   // required
+          authorization_url: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize' // required
+      });
+      if ( /\baccess_token=((\w|\.|-)+)/.test(location.hash) ) {
+        var response = MicrosoftOAuth2Provider.parse(window.location.hash.substr(1));
+      }
+
       document.addEventListener('DOMContentLoaded', function () {
         Coveo.SearchEndpoint.configureSampleEndpoint();
         Coveo.init(document.body);
@@ -17,17 +27,16 @@
   </head>
   <body id="search" class="CoveoSearchInterface" data-enable-history="true" data-design="new">
 
-    <div class="CoveoHelloWorld"></div>
-
     <div class="coveo-tab-section">
       <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
+      <a class="CoveoTab" data-id="FedSearch" data-caption="Federated Search"></a>
     </div>
 
     <div class="coveo-search-section">
-      <div class="CoveoSettings"></div>
+      <div class="CoveoSettings" data-tab-not="FedSearch"></div>
       <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
     </div>
-    <div class="coveo-main-section">
+    <div class="coveo-main-section" data-tab-not="FedSearch">
       <div class="coveo-facet-column">
         <div class="CoveoFacet" data-title="Type" data-field="@objecttype"></div>
         <div class="CoveoFacet" data-title="FileType" data-field="@filetype" ></div>
@@ -61,6 +70,9 @@
         </div>
         <div class="CoveoPager"></div>
       </div>
+    </div>
+    <div class="coveo-main-section CoveoOutlookSearch" data-tab="FedSearch">
+      <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
     </div>
   </body>
 </html>

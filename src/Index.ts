@@ -1,1 +1,1 @@
-export {HelloWorld} from './ui/HelloWorld';
+export {OutlookSearch} from './ui/OutlookSearch';

@@ -37,6 +37,7 @@
     "webpack-fail-plugin": "^1.0.5"
   },
   "dependencies": {
+    "@zalando/oauth2-client-js": "0.0.17",
     "coveo-search-ui": "1.x.x"
   }
 }

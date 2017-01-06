@@ -5,11 +5,14 @@
     <title>search-ui-seed</title>
     <link rel="stylesheet" href="css/CoveoFullSearchNewDesign.css"/>
     <link rel="stylesheet" href="css/coveoextension.css"/>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
     <script src="js/CoveoJsSearch.js"></script>
     <script src="js/coveo.extension.js"></script>
     <script src="js/templatesNew.js"></script>
+
+    <!-- see https://github.com/zalando/oauth2-client-js -->
     <script src="js/oauth2-client.js"></script>
-    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
     <script>
       let MicrosoftOAuth2Provider = new OAuth2Client.Provider({
           id: 'microsoft',   // required
@@ -19,8 +22,40 @@
         var response = MicrosoftOAuth2Provider.parse(window.location.hash.substr(1));
       }
 
+      let doLogin = ()=>{
+        // if ( !MicrosoftOAuth2Provider.refreshToken() ) {
+          MicrosoftOAuth2Provider.deleteTokens();
+          let request = new OAuth2Client.Request({
+              client_id: '<your_key>',  // required
+              redirect_uri: 'https://localhost:8080/index.html',
+              response_mode: 'fragment',
+              scope: 'openid profile https://outlook.office.com/mail.readwrite',
+              state: 12345
+          });
+
+          // Give it to the provider
+          let uri = MicrosoftOAuth2Provider.requestToken(request);
+
+          // Later we need to check if the response was expected so save the request
+          MicrosoftOAuth2Provider.remember(request);
+
+          // Do the redirect
+          window.location.href = uri;
+        // }
+      };
+
       document.addEventListener('DOMContentLoaded', function () {
         Coveo.SearchEndpoint.configureSampleEndpoint();
+        Coveo.SearchEndpoint.endpoints["outlook"] = new Coveo.SearchEndpoint({
+            restUri: 'https://localhost:8080/rest/search',
+            accessToken: MicrosoftOAuth2Provider.getAccessToken()
+        });
+
+        $('#search').on('queryError', (event, args)=>{
+          if (args && args.error && args.error.status === 401) {
+            doLogin();
+          }
+        });
         Coveo.init(document.body);
       })
     </script>
@@ -29,7 +64,7 @@
 
     <div class="coveo-tab-section">
       <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
-      <a class="CoveoTab" data-id="FedSearch" data-caption="Federated Search"></a>
+      <a class="CoveoTab" data-id="FedSearch" data-endpoint="outlook" data-caption="Federated Search"></a>
     </div>
 
     <div class="coveo-search-section">
@@ -72,7 +107,13 @@
       </div>
     </div>
     <div class="coveo-main-section CoveoOutlookSearch" data-tab="FedSearch">
-      <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="coveo-facet-column">
+        <div class="CoveoFacet" data-title="From" data-field="@From"></div>
+        <div class="CoveoFacet" data-title="Importance" data-field="@Importance"></div>
+      </div>
+      <div class="coveo-results-column">
+        <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      </div>
     </div>
   </body>
 </html>

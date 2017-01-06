@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@zalando/oauth2-client-js": "0.0.17",
+    "body-parser": "^1.15.2",
     "coveo-search-ui": "1.x.x"
   }
 }

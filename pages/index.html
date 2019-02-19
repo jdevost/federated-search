@@ -2,16 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>search-ui-seed</title>
+    <title>Federated Search (Outlook) with Coveo</title>
     <link rel="stylesheet" href="css/CoveoFullSearchNewDesign.css"/>
     <link rel="stylesheet" href="css/coveoextension.css"/>
     <script src="js/CoveoJsSearch.js"></script>
     <script src="js/coveo.extension.js"></script>
     <script src="js/templatesNew.js"></script>
-    <script src="js/oauth2-client.js"></script>
+    <script src="js/OAuth2Client.js"></script>
     <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
     <script>
-      let MicrosoftOAuth2Provider = new OAuth2Client.Provider({
+
+      let MicrosoftOAuth2Provider = new window["oauth2-client-js"].Provider({
           id: 'microsoft',   // required
           authorization_url: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize' // required
       });

@@ -22,4 +22,5 @@ fs.createReadStream('./node_modules/coveo-search-ui/bin/image/spritesNew.png').p
 fs.createReadStream('./node_modules/coveo-search-ui/bin/image/retinaNew.png').pipe(fs.createWriteStream('./bin/image/retinaNew.png'));
 fs.createReadStream('./node_modules/coveo-search-ui/bin/js/templates/templatesNew.js').pipe(fs.createWriteStream('./bin/js/templatesNew.js'));
 fs.createReadStream('./node_modules/coveo-search-ui/bin/js/CoveoJsSearch.js').pipe(fs.createWriteStream('./bin/js/CoveoJsSearch.js'));
+fs.createReadStream('./node_modules/@zalando/oauth2-client-js/dist/oauth2-client.js').pipe(fs.createWriteStream('./bin/js/oauth2-client.js'));
 fs.createReadStream('./pages/index.html').pipe(fs.createWriteStream('./bin/index.html'));

@@ -1,4 +1,4 @@
-# search-ui-seed
+# Federated Search with Coveo
 A fast starter / seed project to extend the Coveo Javascript Framework
 
 This project is meant to display a working starting point for a project that wish to extend the [Coveo Javascript Search Framework](https://github.com/coveo/search-ui) with additional components.
@@ -32,7 +32,7 @@ The code is written in [typescript](http://www.typescriptlang.org/) and compiled
 
 ## Dev
 
-`npm run dev` will start a [webpack dev server](https://webpack.github.io/docs/webpack-dev-server.html). After it finishes, load [http://localhost:8080/index.html](http://localhost:8080/index.html) in a browser, and the `index.html` page should load.
+`npm run dev` will start a [webpack dev server](https://webpack.github.io/docs/webpack-dev-server.html). After it finishes, load [https://localhost:8080/index.html](https://localhost:8080/index.html) in a browser, and the `index.html` page should load.
 
 Then, anytime you hit save in a typescript file, the server will reload your application.
 

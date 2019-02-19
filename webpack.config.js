@@ -2,6 +2,9 @@ const webpack = require('webpack');
 const minimize = process.argv.indexOf('--minimize') !== -1;
 const colors = require('colors');
 const failPlugin = require('webpack-fail-plugin');
+
+const production = process.env.NODE_ENV === 'production';
+
 if (minimize) {
   console.log('Building minified version of the library'.bgGreen.red);
 } else {
@@ -9,7 +12,7 @@ if (minimize) {
 }
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
-var plugins = [failPlugin];
+let plugins = [failPlugin];
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -17,6 +20,7 @@ if (minimize) {
 
 
 module.exports = {
+  mode: production ? 'production' : 'development',
   entry: ['./src/Index.ts'],
   output: {
     path: require('path').resolve('./bin/js'),
@@ -26,14 +30,14 @@ module.exports = {
     publicPath: '/js/'
   },
   resolve: {
-    extensions: ['', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
   },
   devtool: 'source-map',
   module: {
-    loaders: [
+    rules: [
       {test: /\.ts$/, loader: 'ts-loader'}
     ]
   },
-  plugins: plugins,
+  // plugins: plugins,
   bail: true
 };
